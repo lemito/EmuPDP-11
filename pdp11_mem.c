@@ -3,9 +3,9 @@
 
 #define MEMSIZE (64 * 1024)
 
-typedef unsigned char byte;
-typedef unsigned short word;
-typedef word Adress;
+typedef unsigned char byte;  // 1 байт
+typedef unsigned short word; // 2 байта
+typedef word Adress;         // адрес - также 2 байт
 
 byte mem[MEMSIZE];
 
@@ -34,8 +34,21 @@ void w_write(Adress adr, word w);
  */
 word w_read(Adress adr);
 
-void mem_test() {
 
+/**
+ * Картинка-имитация памяти
+ * |---------|                          | №ячейки (адрес)
+ * | 0x0a    | -> байт                      0
+ * |---------|                              -
+ * | 0x0b    | -> байт                      1
+ * |---------|                              -
+ * | 0x0a    | -> |                         2
+ * |---------|    | => слово (2 байт)       -
+ * | 0x0b    | -> |                         3
+ * |---------|
+*/
+void mem_test() {
+  printf("%lu", sizeof(word) / sizeof(byte));
   Adress a = 3;
   byte b1 = 0x0b, b0 = 0x0a;
   word w = 0x0b0a;
@@ -62,7 +75,7 @@ byte b_read(Adress adr) { return mem[adr]; }
 void w_write(Adress adr, word w) {
   mem[adr] = (byte)w >> 8;
   mem[adr + 1] = (byte)w & 0xFF;
-  printf("%04hx %04hx", mem[adr], mem[adr+1]);
+  printf("%04hx %04hx", mem[adr], mem[adr + 1]);
 }
 
 word w_read(Adress adr) {
