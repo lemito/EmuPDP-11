@@ -4,4 +4,5 @@ project(EmuPDP_11 C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(EmuPDP_11
-        primitive.c)
+        primitive.c
+        pdp11_mem.c)
