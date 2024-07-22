@@ -34,8 +34,10 @@ void w_write(Adress adr, word w);
  */
 word w_read(Adress adr);
 
-
 /**
+ * Адреса:
+ * | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+ *                                                   |       |
  * Картинка-имитация памяти
  * |---------|                          | №ячейки (адрес)
  * | 0x0a    | -> байт                      0
@@ -46,7 +48,7 @@ word w_read(Adress adr);
  * |---------|    | => слово (2 байт)       -
  * | 0x0b    | -> |                         3
  * |---------|
-*/
+ */
 void mem_test() {
   printf("%lu", sizeof(word) / sizeof(byte));
   Adress a = 3;
@@ -57,8 +59,8 @@ void mem_test() {
   word wres = w_read(a);
   printf("%04hx=%02hhx%02hhx\n", wres, b1, b0);
   assert(wres == w);
-  w_write(5, w);
-  word ww = w_read(5);
+  w_write(6, w);
+  word ww = w_read(6);
   assert(ww == w);
 }
 
@@ -71,11 +73,11 @@ void b_write(Adress adr, byte b) { mem[adr] = b; }
 
 byte b_read(Adress adr) { return mem[adr]; }
 
-// TODO: починить :)
 void w_write(Adress adr, word w) {
-  mem[adr] = (byte)w >> 8;
-  mem[adr + 1] = (byte)w & 0xFF;
-  printf("%04hx %04hx", mem[adr], mem[adr + 1]);
+  byte b1 = w >> 8;
+  mem[adr + 1] = b1;
+  byte b0 = w & 0xFF;
+  mem[adr] = b0;
 }
 
 word w_read(Adress adr) {
