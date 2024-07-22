@@ -83,6 +83,5 @@ void w_write(Adress adr, word w) {
 word w_read(Adress adr) {
   word res = ((word)mem[adr + 1]) << 8;
   res = res | mem[adr];
-  printf("\nres=%04hx\n", res);
   return res;
 }
