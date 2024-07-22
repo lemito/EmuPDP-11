@@ -1,6 +1,9 @@
 #include <assert.h>
 #include <stdio.h>
 
+#define PRINT_BYTE(byte) printf("%02hhx", byte);
+#define PRINT_WORD(word) printf("%04hx", word);
+
 #define MEMSIZE (64 * 1024)
 
 typedef unsigned char byte;  // 1 байт
@@ -62,6 +65,8 @@ void mem_test() {
   w_write(6, w);
   word ww = w_read(6);
   assert(ww == w);
+  b_write(10, 0x54);
+  PRINT_BYTE(b_read(10));
 }
 
 int main() {
