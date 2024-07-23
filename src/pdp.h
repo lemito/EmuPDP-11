@@ -24,10 +24,11 @@ typedef unsigned short word; // 2 байта
 typedef word Adress;         // адрес - также 2 байт
 
 typedef struct {
-  word mask;
-  word opcode;
-  char * name;
-  void (*do_command)(void);
+  word mask;                // маска команды
+  word opcode;              // операционный код команды
+  char *name;               // имя команды
+  void (*do_command)(void); // действие команды
+  // (w & mask) == opcode
 } Command;
 
 /**
@@ -35,7 +36,7 @@ typedef struct {
  */
 #define pc reg[7]
 
-extern  word reg[REGSIZE];
+extern word reg[REGSIZE];
 
 /**
  * запись байта по адресу
@@ -70,8 +71,6 @@ void logger_impl(enum LOG_LEVELS level, const char *fmt, ...);
 
 void run();
 
-void load_file(char* filename);
-
-
+void load_file(char *filename);
 
 #endif // EMUPDP_11_SRC_PDP_H_
