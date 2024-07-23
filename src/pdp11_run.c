@@ -13,15 +13,10 @@ void do_mov() {}
 void do_nothing() {}
 
 Command cmds[] = {{0170000, 0060000, "add", do_add},
-                  {
-                      0170000,
-                      0010000,
-                      "mov",
-                      do_mov,
-                  },
+                  {0170000, 0010000, "mov", do_mov},
                   {0177777, 0000000, "halt", do_halt},
-                  {0000000, 0000000, "unknow", do_nothing, 0},
-                  {0000000, 0000000, "TERMINATE", do_nothing, 0}};
+                  {0000000, 0000000, "unknow", do_nothing},
+                  {0000000, 0000000, "TERMINATE", do_nothing}};
 
 void run() {
   pc = 01000;
