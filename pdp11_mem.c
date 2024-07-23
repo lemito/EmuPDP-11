@@ -37,6 +37,29 @@ void w_write(Adress adr, word w);
  */
 word w_read(Adress adr);
 
+void load_data() {
+  address start;
+  int N;
+  byte input;
+
+  while (fscanf(stdin, "%hx %x", &start, &N) == 2) {
+    for (int i = 0; i < N; ++i) {
+      fscanf(stdin, "%hhx", &input);
+      b_write(start+i, input);
+    }
+  }
+}
+
+
+void mem_dump(address adr, int size) {
+  for (int i = 0; i < size; i+=2) {
+    address new_adr = adr + i;
+    word res = w_read(new_adr);
+    DEBUG_PRINT(printf("res="); PRINT_WORD(res) printf("\n");)
+    printf("%06o: %06o %04x\n", new_adr, res, res);
+  }
+}
+
 /**
  * Адреса:
  * | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
@@ -69,8 +92,13 @@ void mem_test() {
   PRINT_BYTE(b_read(10));
 }
 
-int main() {
-  mem_test();
+int main(int argc, char *argv[]) {
+  // mem_test();
+  load_data();
+
+  mem_dump(0x40, 20);
+  printf("\n");
+  mem_dump(0x200, 0x26);
   return 0;
 }
 
