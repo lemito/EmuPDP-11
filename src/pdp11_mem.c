@@ -7,7 +7,7 @@
 /**
  * Основаня память
  */
-byte mem[MEMSIZE];
+static byte mem[MEMSIZE];
 
 /**
  * Регистры

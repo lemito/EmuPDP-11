@@ -22,6 +22,13 @@ typedef unsigned short word; // 2 байта
 typedef word Adress;         // адрес - также 2 байт
 
 /**
+ * pc - program counter (запоминает, какую программу мы выполняем)
+ */
+#define pc reg[7]
+
+extern  word reg[REGSIZE];
+
+/**
  * запись байта по адресу
  * @param adr
  * @param b
