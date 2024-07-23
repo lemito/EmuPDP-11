@@ -64,6 +64,14 @@ word w_read(Adress adr);
 
 enum LOG_LEVELS set_log_level(enum LOG_LEVELS level);
 
-void log(enum LOG_LEVELS level, const char *fmt, ...);
+void logger_impl(enum LOG_LEVELS level, const char *fmt, ...);
+
+#define INFO_(text, ...) logger_impl(INFO, text, __VA_ARGS__)
+
+void run();
+
+void load_file(char* filename);
+
+
 
 #endif // EMUPDP_11_SRC_PDP_H_

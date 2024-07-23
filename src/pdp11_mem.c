@@ -2,7 +2,6 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include "pdp.h"
 
 /**
  * Основаня память
@@ -14,7 +13,7 @@ static byte mem[MEMSIZE];
  */
  word reg[REGSIZE];
 
-void load_data() {
+_unused void load_data() {
   address start;
   int N;
   byte input;
@@ -45,7 +44,7 @@ enum LOG_LEVELS set_log_level(enum LOG_LEVELS level) {
   return res;
 };
 
-void log(enum LOG_LEVELS level, const char *fmt, ...) {
+void logger_impl(enum LOG_LEVELS level, const char *fmt, ...) {
   if (level <= log_level) {
     va_list arg_list;
     va_start(arg_list, fmt);
