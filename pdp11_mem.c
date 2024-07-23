@@ -1,17 +1,17 @@
 #include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
 
 #define PRINT_BYTE(byte) printf("%02hhx", byte);
 #define PRINT_WORD(word) printf("%04hx", word);
 
-
 #define isDebug 0
-#define DEBUG_PRINT(print) if(isDebug == 1) {print};
+#define DEBUG_PRINT(print)                                                     \
+  if (isDebug == 1) {                                                          \
+    print                                                                      \
+  };
 
-#define ERROR 0
-#define INFO 1
-#define TRACE 2
-#define DEBUG 3
+enum LOG_LEVELS { ERROR, INFO, TRACE, DEBUG };
 
 #define address Adress
 
@@ -22,8 +22,6 @@ typedef unsigned short word; // 2 байта
 typedef word Adress;         // адрес - также 2 байт
 
 byte mem[MEMSIZE];
-
-// void log(int log_level, const char *fmt, ...) {}
 
 /**
  * запись байта по адресу
@@ -58,18 +56,35 @@ void load_data() {
   while (fscanf(stdin, "%hx %x", &start, &N) == 2) {
     for (int i = 0; i < N; ++i) {
       fscanf(stdin, "%hhx", &input);
-      b_write(start+i, input);
+      b_write(start + i, input);
     }
   }
 }
 
-
 void mem_dump(address adr, int size) {
-  for (int i = 0; i < size; i+=2) {
+  for (int i = 0; i < size; i += 2) {
     address new_adr = adr + i;
     word res = w_read(new_adr);
     DEBUG_PRINT(printf("res="); PRINT_WORD(res) printf("\n");)
     printf("%06o: %06o %04x\n", new_adr, res, res);
+  }
+}
+
+// значение по умолчанию
+static enum LOG_LEVELS log_level = INFO;
+
+enum LOG_LEVELS set_log_level(enum LOG_LEVELS level) {
+  enum LOG_LEVELS res = log_level;
+  log_level = level;
+  return res;
+};
+
+void log(enum LOG_LEVELS level, const char *fmt, ...) {
+  if (level <= log_level) {
+    va_list arg_list;
+    va_start(arg_list, fmt);
+    vprintf(fmt, arg_list);
+    va_end(arg_list);
   }
 }
 
@@ -89,14 +104,12 @@ void mem_dump(address adr, int size) {
  * |---------|
  */
 void mem_test() {
-  printf("%lu", sizeof(word) / sizeof(byte));
   Adress a = 3;
   byte b1 = 0x0b, b0 = 0x0a;
   word w = 0x0b0a;
   b_write(a, b0);
   b_write(a + 1, b1);
   word wres = w_read(a);
-  printf("%04hx=%02hhx%02hhx\n", wres, b1, b0);
   assert(wres == w);
   w_write(6, w);
   word ww = w_read(6);
@@ -106,12 +119,30 @@ void mem_test() {
 }
 
 int main(int argc, char *argv[]) {
-  // mem_test();
-  load_data();
+  //  // mem_test();
+  //  load_data();
+  //
+  //  mem_dump(0x40, 20);
+  //  printf("\n");
+  //  mem_dump(0x200, 0x26);
+  set_log_level(INFO);
 
-  mem_dump(0x40, 20);
-  printf("\n");
-  mem_dump(0x200, 0x26);
+  int x, y;
+  scanf("%d%d", &x, &y);
+
+  log(INFO, "%d + %d = %d\n", x, y, x + y - 1);
+  log(ERROR, "Oops, %d+%d=%d, not %d\n", x, y, x + y, x + y - 1);
+  log(TRACE, "Эту надпись не должны видеть\n");
+
+  int old_log_level = set_log_level(TRACE);
+
+  log(TRACE, "Visible text\n");
+  log(DEBUG, "Debug info\n");
+
+  set_log_level(old_log_level);
+
+  log(INFO, "The end!\n");
+  log(TRACE, "No code after return\n");
   return 0;
 }
 
