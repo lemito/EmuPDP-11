@@ -9,5 +9,6 @@ add_executable(EmuPDP_11
         src/pdp11.c
         src/pdp11_command.c
         src/logger.c
-        src/pdp11_run.c)
+        src/pdp11_run.c
+        src/load_file.c)
 add_executable(prim primitive.c)
