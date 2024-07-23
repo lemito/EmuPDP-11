@@ -1,52 +1,18 @@
+#include "pdp.h"
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include "pdp.h"
 
-#define PRINT_BYTE(byte) printf("%02hhx", byte);
-#define PRINT_WORD(word) printf("%04hx", word);
-
-#define isDebug 0
-#define DEBUG_PRINT(print)                                                     \
-  if (isDebug == 1) {                                                          \
-    print                                                                      \
-  };
-
-enum LOG_LEVELS { ERROR, INFO, TRACE, DEBUG };
-
-#define address Adress
-
-#define MEMSIZE (64 * 1024)
-
-typedef unsigned char byte;  // 1 байт
-typedef unsigned short word; // 2 байта
-typedef word Adress;         // адрес - также 2 байт
-
+/**
+ * Основаня память
+ */
 byte mem[MEMSIZE];
 
 /**
- * запись байта по адресу
- * @param adr
- * @param b
+ * Регистры
  */
-void b_write(Adress adr, byte b);
-/**
- * чтение байта по адресу
- * @param adr
- * @return
- */
-byte b_read(Adress adr);
-/**
- * запись слова по адресу
- * @param adr
- * @param w
- */
-void w_write(Adress adr, word w);
-/**
- * чтение слова по адресу
- * @param adr
- * @return
- */
-word w_read(Adress adr);
+ word reg[REGSIZE];
 
 void load_data() {
   address start;
@@ -116,34 +82,6 @@ void mem_test() {
   assert(ww == w);
   b_write(10, 0x54);
   PRINT_BYTE(b_read(10));
-}
-
-int main(int argc, char *argv[]) {
-  //  // mem_test();
-  //  load_data();
-  //
-  //  mem_dump(0x40, 20);
-  //  printf("\n");
-  //  mem_dump(0x200, 0x26);
-  set_log_level(INFO);
-
-  int x, y;
-  scanf("%d%d", &x, &y);
-
-  log(INFO, "%d + %d = %d\n", x, y, x + y - 1);
-  log(ERROR, "Oops, %d+%d=%d, not %d\n", x, y, x + y, x + y - 1);
-  log(TRACE, "Эту надпись не должны видеть\n");
-
-  int old_log_level = set_log_level(TRACE);
-
-  log(TRACE, "Visible text\n");
-  log(DEBUG, "Debug info\n");
-
-  set_log_level(old_log_level);
-
-  log(INFO, "The end!\n");
-  log(TRACE, "No code after return\n");
-  return 0;
 }
 
 void b_write(Adress adr, byte b) { mem[adr] = b; }
