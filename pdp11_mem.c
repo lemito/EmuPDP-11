@@ -4,6 +4,17 @@
 #define PRINT_BYTE(byte) printf("%02hhx", byte);
 #define PRINT_WORD(word) printf("%04hx", word);
 
+
+#define isDebug 0
+#define DEBUG_PRINT(print) if(isDebug == 1) {print};
+
+#define ERROR 0
+#define INFO 1
+#define TRACE 2
+#define DEBUG 3
+
+#define address Adress
+
 #define MEMSIZE (64 * 1024)
 
 typedef unsigned char byte;  // 1 байт
@@ -11,6 +22,8 @@ typedef unsigned short word; // 2 байта
 typedef word Adress;         // адрес - также 2 байт
 
 byte mem[MEMSIZE];
+
+// void log(int log_level, const char *fmt, ...) {}
 
 /**
  * запись байта по адресу
