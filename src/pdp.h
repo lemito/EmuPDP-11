@@ -1,6 +1,8 @@
 #ifndef EMUPDP_11_SRC_PDP_H_
 #define EMUPDP_11_SRC_PDP_H_
 
+#define _unused __attribute__((unused))
+
 #define PRINT_BYTE(byte) printf("%02hhx", byte);
 #define PRINT_WORD(word) printf("%04hx", word);
 
@@ -20,6 +22,13 @@ enum LOG_LEVELS { ERROR, INFO, TRACE, DEBUG };
 typedef unsigned char byte;  // 1 байт
 typedef unsigned short word; // 2 байта
 typedef word Adress;         // адрес - также 2 байт
+
+typedef struct {
+  word mask;
+  word opcode;
+  char * name;
+  void (*do_command)(void);
+} Command;
 
 /**
  * pc - program counter (запоминает, какую программу мы выполняем)
