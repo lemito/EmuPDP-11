@@ -27,7 +27,9 @@ void run() {
     printf("%06o: %06o", pc, work_word);
     pc += 2;
     for (int i = 0; strcmp(cmds[i].name, "TERMINATE") != 0; i++) {
-      cmds[i].do_command();
+      if ((work_word & cmds[i].mask) == cmds[i].opcode) {
+        cmds[i].do_command();
+      }
     }
   }
 }
