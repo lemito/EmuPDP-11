@@ -24,7 +24,7 @@ void run() {
   word work_word;
   while (1) {
     work_word = w_read(pc);
-    printf("%06o: %06o", pc, work_word);
+    printf("%06o: %06o\n", pc, work_word);
     pc += 2;
     for (int i = 0; strcmp(cmds[i].name, "TERMINATE") != 0; i++) {
       if ((work_word & cmds[i].mask) == cmds[i].opcode) {
