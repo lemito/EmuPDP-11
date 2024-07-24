@@ -8,9 +8,9 @@ void do_halt() {
   exit(0);
 }
 
-void do_add() {}
-void do_mov() {}
-void do_nothing() {}
+void do_add() { INFO_("do_add\n", NULL); }
+void do_mov() { INFO_("do_mov\n", NULL); }
+void do_nothing() { INFO_("do_nothing\n", NULL); }
 
 Command cmds[] = {{0170000, 0060000, "add", do_add},
                   {0170000, 0010000, "mov", do_mov},
@@ -24,7 +24,7 @@ void run() {
   word work_word;
   while (1) {
     work_word = w_read(pc);
-    printf("%06o: %06o\n", pc, work_word);
+    printf("%06o: %06o ", pc, work_word);
     pc += 2;
     for (int i = 0; strcmp(cmds[i].name, "TERMINATE") != 0; i++) {
       if ((work_word & cmds[i].mask) == cmds[i].opcode) {
