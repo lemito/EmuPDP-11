@@ -3,9 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+Arg ss, dd;
+
 void reg_dump() {
   for (int i = 0; i < REGSIZE; ++i) {
-    printf("r%d: %04o ", i, reg[i]);    
+    printf("r%d: %04o ", i, reg[i]);
   }
 }
 
@@ -15,9 +17,65 @@ void do_halt() {
   exit(0);
 }
 
-void do_add() { INFO_("do_add\n", NULL); }
-void do_mov() { INFO_("do_mov\n", NULL); }
+void do_add() {
+  w_write(dd.adr, ss.value + dd.value);
+  INFO_("do_add\n", NULL);
+}
+void do_mov() {
+  w_write(dd.adr, ss.value);
+  INFO_("do_mov\n", NULL);
+}
 void do_nothing() { INFO_("do_nothing\n", NULL); }
+
+Arg get_mr(word work_word) {
+  Arg res;
+  int r = work_word & 7;        // номер регистра
+  int m = (work_word >> 3) & 7; // номер моды
+  /**
+   * **Мода 0** : Адрес - номер регистра, значение - значение регистра, тут же
+печатаем трассировку `R1`
+   * **Мода 1** : Адрес - лежит в регистре, значение читаем в памяти по этому
+адресу, тут же печатаем трассировку `(R1)`
+  * **Мода 2** : То же, что мода 1, но +2 к значению регистра в конце.
+   */
+  switch (m) {
+    // мода 0, R1
+  case 0:
+    res.adr = r;
+    res.value = reg[r];
+    INFO_("R%d ", r);
+    break;
+  // мода 1, (R1)
+  case 1:
+    res.adr = reg[r];
+    res.value = w_read(res.adr);
+    INFO_("(R%d) ", r);
+    break;
+  // мода 2, (R1)+ или #3
+  case 2:
+    res.adr = reg[r];
+    res.value = w_read(res.adr);
+    reg[r] += 2;
+    if (r == 7)
+      INFO_("#%o ", res.value);
+    else
+      INFO_("(R%d)+ ", r);
+    break;
+
+  default:
+    INFO_("Nothing there\n", NULL);
+    break;
+  }
+  return res;
+}
+
+word read_cmd() {
+  word work_word = w_read(pc);
+  printf("%06o: %06o ", pc, work_word);
+  pc += 2;
+
+  return work_word;
+}
 
 Command cmds[] = {{0170000, 0060000, "add", do_add},
                   {0170000, 0010000, "mov", do_mov},
@@ -25,18 +83,28 @@ Command cmds[] = {{0170000, 0060000, "add", do_add},
                   {0000000, 0000000, "unknow", do_nothing},
                   {0000000, 0000000, "TERMINATE", do_nothing}};
 
+
+Command parse_cmd(word work_word) {
+  Command res;
+  for (int i = 0; strcmp(cmds[i].name, "TERMINATE") != 0; i++) {
+    if ((work_word & cmds[i].mask) == cmds[i].opcode) {
+      res = cmds[i];
+      break;
+    }
+  }
+  return res;
+}
+
 void run() {
   pc = 01000;
 
   word work_word;
+  Command cmd;
   while (1) {
     work_word = w_read(pc);
     printf("%06o: %06o ", pc, work_word);
     pc += 2;
-    for (int i = 0; strcmp(cmds[i].name, "TERMINATE") != 0; i++) {
-      if ((work_word & cmds[i].mask) == cmds[i].opcode) {
-        cmds[i].do_command();
-      }
-    }
+    cmd = parse_cmd(work_word);
+    cmd.do_command();
   }
 }

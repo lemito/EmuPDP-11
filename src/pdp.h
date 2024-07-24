@@ -34,7 +34,7 @@ typedef struct {
 typedef struct {
     word value;     // значение (что)
     address adr;    // адрес (куда)
-} Arg, ss, dd;
+} Arg;
 
 /**
  * pc - program counter (запоминает, какую программу мы выполняем)
