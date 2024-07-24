@@ -6,7 +6,7 @@ void load_file(char* filename){
   FILE* input_file = fopen(filename, "r");
 
   if (input_file == NULL){
-    perror("data.txt");
+    perror(filename);
     exit(errno);
   }
 
