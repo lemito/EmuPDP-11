@@ -31,6 +31,11 @@ typedef struct {
   // (w & mask) == opcode
 } Command;
 
+typedef struct {
+    word value;     // значение (что)
+    address adr;    // адрес (куда)
+} Arg, ss, dd;
+
 /**
  * pc - program counter (запоминает, какую программу мы выполняем)
  */
@@ -72,5 +77,7 @@ void logger_impl(enum LOG_LEVELS level, const char *fmt, ...);
 void run();
 
 void load_file(char *filename);
+
+Arg get_mr(word w);
 
 #endif // EMUPDP_11_SRC_PDP_H_

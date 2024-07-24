@@ -3,7 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+void reg_dump() {
+  for (int i = 0; i < REGSIZE; ++i) {
+    printf("r%d: %04o ", i, reg[i]);    
+  }
+}
+
 void do_halt() {
+  reg_dump();
   INFO_("THE END!!!\n", NULL);
   exit(0);
 }
