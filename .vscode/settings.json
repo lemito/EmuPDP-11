@@ -5,5 +5,6 @@
             // "../../../tests/01_sum/01_sum.pdp.o"
             "../../../tests/00_meow/00_meow.pdp.o"
         ]
-    }
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc"
 }
