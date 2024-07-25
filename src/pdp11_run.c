@@ -62,9 +62,6 @@ Arg get_mr(word work_word) {
       INFO_("(R%d)+ ", r);
     break;
 
-  default:
-    INFO_("Nothing there\n", NULL);
-    break;
   }
   return res;
 }
@@ -92,6 +89,8 @@ Command parse_cmd(word work_word) {
       break;
     }
   }
+  ss = get_mr(work_word >> 6);
+  dd = get_mr(work_word);
   return res;
 }
 

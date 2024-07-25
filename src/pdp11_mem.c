@@ -11,7 +11,7 @@ static byte mem[MEMSIZE];
 /**
  * Регистры
  */
- word reg[REGSIZE];
+word reg[REGSIZE];
 
 _unused void load_data() {
   address start;
