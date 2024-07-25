@@ -3,6 +3,10 @@
 
 #include <assert.h>
 
+#ifndef NULL
+#define NULL (void *)0
+#endif // !NULL
+
 #define _unused __attribute__((unused))
 
 #define PRINT_BYTE(byte) printf("%02hhx", byte);
@@ -34,9 +38,13 @@ typedef struct {
 } Command;
 
 typedef struct {
-    word value;     // значение (что)
-    address adr;    // адрес (куда)
+  word value;  // значение (что)
+  address adr; // адрес (куда)
 } Arg;
+
+Arg ss, dd;
+
+extern Command cmds[];
 
 /**
  * pc - program counter (запоминает, какую программу мы выполняем)
@@ -75,6 +83,8 @@ enum LOG_LEVELS set_log_level(enum LOG_LEVELS level);
 void logger_impl(enum LOG_LEVELS level, const char *fmt, ...);
 
 #define INFO_(text, ...) logger_impl(INFO, text, __VA_ARGS__)
+
+#define trace(text, ...) logger_impl(TRACE, text, __VA_ARGS__)
 
 void run();
 
