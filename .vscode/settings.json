@@ -6,5 +6,8 @@
             "../../../tests/00_meow/00_meow.pdp.o"
         ]
     },
-    "C_Cpp.default.compilerPath": "/usr/bin/gcc"
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+    "files.associations": {
+        "assert.h": "c"
+    }
 }
