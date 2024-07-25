@@ -1,6 +1,8 @@
 #ifndef EMUPDP_11_SRC_PDP_H_
 #define EMUPDP_11_SRC_PDP_H_
 
+#include <assert.h>
+
 #define _unused __attribute__((unused))
 
 #define PRINT_BYTE(byte) printf("%02hhx", byte);
