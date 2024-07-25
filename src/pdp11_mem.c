@@ -88,10 +88,14 @@ void b_write(Adress adr, byte b) { mem[adr] = b; }
 byte b_read(Adress adr) { return mem[adr]; }
 
 void w_write(Adress adr, word w) {
-  byte b1 = w >> 8;
-  mem[adr + 1] = b1;
-  byte b0 = w & 0xFF;
-  mem[adr] = b0;
+  if (adr < REGSIZE) {
+    reg[adr] = w & 0xFFFF;
+  } else {
+    byte b1 = w >> 8;
+    mem[adr + 1] = b1;
+    byte b0 = w & 0xFF;
+    mem[adr] = b0;
+  }
 }
 
 word w_read(Adress adr) {

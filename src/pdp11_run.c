@@ -86,7 +86,7 @@ Command cmds[] = {{0170000, 0060000, "add", do_add},
 
 Command parse_cmd(word work_word) {
   Command res;
-  for (int i = 0; strcmp(cmds[i].name, "TERMINATE") != 0; i++) {
+  for (int i = 0; ; i++) {
     if ((work_word & cmds[i].mask) == cmds[i].opcode) {
       res = cmds[i];
       break;
