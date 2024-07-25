@@ -42,8 +42,6 @@ typedef struct {
   address adr; // адрес (куда)
 } Arg;
 
-Arg ss, dd;
-
 extern Command cmds[];
 
 /**
@@ -91,5 +89,7 @@ void run();
 void load_file(char *filename);
 
 Arg get_mr(word w);
+
+Command parse_cmd(word work_word);
 
 #endif // EMUPDP_11_SRC_PDP_H_
